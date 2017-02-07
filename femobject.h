@@ -7,7 +7,7 @@
 class FEMObject : public GMlib::TriangleFacets<float>
 {
 public:
-    FEMObject();
+    FEMObject(): GMlib::TriangleFacets<float>(20){}
 
     ArrayLX<Node>                                      _nodes;
     GMlib::DMatrix<float>                              _A;
