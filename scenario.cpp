@@ -67,22 +67,22 @@ void Scenario::initializeScenario() {
   top_rcpair.renderer->reshape( GMlib::Vector<int,2>(init_viewport_size, init_viewport_size) );
 
 
-  _simulator = std::make_shared<Simulator>(*scene());
-  _simulator->setupSimulator();
+//  _simulator = std::make_shared<Simulator>(*scene());
+//  _simulator->setupSimulator();
 
 
 //default scenario (torus)
-  /*// Surface visualizers
-  auto surface_visualizer = new GMlib::PSurfNormalsVisualizer<float,3>;
+  // Surface visualizers
+//  auto surface_visualizer = new GMlib::PSurfNormalsVisualizer<float,3>;
 
-  // Surface
-  auto surface = new TestTorus;
-  surface->toggleDefaultVisualizer();
-  surface->insertVisualizer(surface_visualizer);
-  surface->replot(200,200,1,1);
-  scene()->insert(surface);
+//  // Surface
+//  auto surface = new TestTorus;
+//  surface->toggleDefaultVisualizer();
+//  surface->insertVisualizer(surface_visualizer);
+//  surface->replot(200,200,1,1);
+//  scene()->insert(surface);
 
-  surface->test01();*/
+//  surface->test01();
 
 }
 
