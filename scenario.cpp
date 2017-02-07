@@ -4,6 +4,8 @@
 
 #include "simulator.h"
 
+#include "femobject.h"
+
 //// hidmanager
 //#include "hidmanager/defaulthidmanager.h"
 
@@ -83,6 +85,16 @@ void Scenario::initializeScenario() {
 //  scene()->insert(surface);
 
 //  surface->test01();
+
+
+// FEM Visualization
+
+  std::unique_ptr<FEMObject> _t;
+  _t = std::make_unique<FEMObject>();
+  _t->randomTriangulation(50,5);
+  _t->replot();
+  scene()->insert(_t.get());
+
 
 }
 

@@ -66,7 +66,7 @@ GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSEdge<flo
 
 }
 
-GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSTriangle<float> *tr, Node *node){
+GMlib::Vector<GMlib::Vector<float,2>,3> vectorsArray(GMlib::TSTriangle<float> *tr, Node *node){
 
     GMlib::Point<float,2> p0,p1,p2;
     GMlib::Vector<GMlib::Vector<float,2>,3> d; //output
