@@ -60,12 +60,30 @@ GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSEdge<flo
 
     d[0] = p1 - p0;
     d[1] = p2 - p0;
-    d[2] = p2 - p1;
+    d[2] = p3 - p0;
 
     return d;
 
 }
 
-//GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSTriangle<float> *tr, Node *node){
+GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSTriangle<float> *tr, Node *node){
 
-//}
+    GMlib::Point<float,2> p0,p1,p2;
+    GMlib::Vector<GMlib::Vector<float,2>,3> d; //output
+    GMlib::Array<GMlib::TSVertex<float>*>   v = tr->getVertices();
+    if (node->isThis(v[1]))
+        std::swap(v[0],v[1]);
+    if (node->isThis(v[2]))
+        std::swap(v[0],v[2]);
+
+    p0 = v[0]->getParameter();
+    p1 = v[1]->getParameter();
+    p2 = v[2]->getParameter();
+
+    d[0] = p1 - p0;
+    d[1] = p2 - p0;
+    d[2] = p2 - p1;
+
+    return d;
+
+}
