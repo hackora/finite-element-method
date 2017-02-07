@@ -1,4 +1,5 @@
 #include "femobject.h"
+#include <gmCoreModule>
 
 FEMObject::FEMObject()
 {
@@ -16,4 +17,21 @@ void FEMObject::regularTriangulation(int n, int m, float r){
             this->insertAlways(pt);
         }
     }
+}
+
+
+void FEMObject::randomTriangulation(int n, float r){
+    GMlib::Random<int> rand;
+    auto rn = 4;
+    auto m = n/rn;
+    regularTriangulation(rn,m,r);
+    auto nm = std::max(M_PI / (std::sqrt(3*sin(M_PI/n)*sin(M_PI/n)+2-n)*0.5/n), (1.1));
+    auto num = 1 + n *nm;
+    int t = num * 0.8;
+    for (int i=0;i<t;i++){
+        std::swap(this[rand.get()],this[rand.get()]);
+    }
+    //TODO: Remove all elements after index num that are not on the boundary
+
+
 }
