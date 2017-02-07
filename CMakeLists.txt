@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.4)
 
 # Global name of the project
-project(newton_cradle VERSION 0.1.0 LANGUAGES CXX)
+project(fem VERSION 0.1.0 LANGUAGES CXX)
 
 # Specify compiler features
 set(CMAKE_CXX_STANDARD 14)
@@ -126,6 +126,9 @@ set( HDRS
   testtorus.h
   scenario.h
   simulator.h
+
+  femobject.h
+  node.h
   )
 
 set( SRCS
@@ -148,6 +151,9 @@ set( SRCS
 
   scenario.cpp
   simulator.cpp
+
+  femobject.cpp
+  node.cpp
   )
 
 #########
@@ -165,6 +171,7 @@ QT5_WRAP_CPP( HDRS_MOC
   application/window.h
 
   scenario.h
+
   )
 
 set( RCCS
