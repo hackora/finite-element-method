@@ -7,8 +7,10 @@ class Node
 {
 public:
     Node();
-    GMlib::TSVertex<float>                      *_vt;
+    GMlib::TSVertex<float>*                      _vt;
     GMlib::Array<GMlib::TSTriangle<float>*>      getTriangles();
+    bool                                         isThis(GMlib::TSVertex<float>*);
+    GMlib::TSEdge<float>*                        neighbor(Node &n);
 
 };
 
