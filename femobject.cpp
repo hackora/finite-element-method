@@ -7,6 +7,7 @@ FEMObject::FEMObject()
 }
 
 void FEMObject::regularTriangulation(int n, int m, float r){
+
     auto centerPoint = GMlib::Point<float,2>(0,0);
     this->insertAlways(centerPoint);
     for(int i=0;i<m;i++){
@@ -21,6 +22,7 @@ void FEMObject::regularTriangulation(int n, int m, float r){
 
 
 void FEMObject::randomTriangulation(int n, float r){
+
     GMlib::Random<int> rand;
     auto rn = 4;
     auto m = n/rn;
@@ -35,3 +37,35 @@ void FEMObject::randomTriangulation(int n, float r){
 
 
 }
+
+GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSEdge<float> *edg){
+
+    GMlib::Array<GMlib::TSTriangle<float>*> tr = edg->getTriangle();
+    GMlib::Array<GMlib::TSVertex<float>*>   v1 = tr[0]->getVertices();
+    GMlib::Array<GMlib::TSVertex<float>*>   v2 = tr[1]->getVertices();
+    GMlib::Vector<GMlib::Vector<float,2>,3> d; //output
+    GMlib::Point<float,2> p0,p1,p2,p3;
+    p0 = edg->getFirstVertex()->getParameter();
+    p1 = edg->getFirstVertex()->getParameter();
+    //p2
+    for(int i=0;i<3;i++){
+        if(v1[i]!=edg->getFirstVertex() && v1[i]!=edg->getLastVertex())
+            p2 = v1[i]->getParameter();
+    }
+    //p3
+    for(int i=0;i<3;i++){
+        if(v2[i]!=edg->getFirstVertex() && v2[i]!=edg->getLastVertex())
+            p2 = v2[i]->getParameter();
+    }
+
+    d[0] = p1 - p0;
+    d[1] = p2 - p0;
+    d[2] = p2 - p1;
+
+    return d;
+
+}
+
+//GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSTriangle<float> *tr, Node *node){
+
+//}
