@@ -1,9 +1,8 @@
 #include "femobject.h"
 #include <gmCoreModule>
 
-//FEMObject::FEMObject()
-//{
-
+//FEMObject::FEMObject(){
+//set the _nodes Array : means set _vt of every node
 //}
 
 void FEMObject::regularTriangulation(int n, int m, float r){
@@ -89,15 +88,13 @@ GMlib::Vector<GMlib::Vector<float,2>,3> FEMObject::vectorsArray(GMlib::TSTriangl
 
 }
 
-void FEMObject::combination(){
-    //create array of nodes
-    //GMlib::Array<_nodes> nodes;
+void FEMObject::computation(){
+    //populate _nodes
+
 
     //set zeroes in _A
     for(int i=0; i<_nodes.size();i++){
-        for (int j=0;j<_nodes.size();j++){
-            _A[i][j] = 0;
-        }
+
     }
 
     //computation
@@ -126,6 +123,8 @@ void FEMObject::combination(){
 
                 _A[j][i] = (dh1 * (1 - dh1) / h1 - dd) * area1 * 0.5 +
                            (dh2 * (1 - dh2) / h2 - dd) * area2 * 0.5;
+
+                std::cout<<_A[i][j]<<'\n';
 
             }
         }
@@ -162,5 +161,4 @@ void FEMObject::updateHeight(float F){
     for (int i=0;i<_nodes.size();i++){
         _nodes[i]._vt->setZ(X[i]);
     }
-
 }

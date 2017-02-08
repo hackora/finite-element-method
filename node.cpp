@@ -1,8 +1,10 @@
 #include "node.h"
 
-Node::Node()
-{
-
+Node::Node(){
+    std::cout<< "constructor of nodes";
+    auto centerPoint = GMlib::Point<float,2>(0,0);
+    auto vt = GMlib::TSVertex<float>(centerPoint);
+    _vt = &vt;
 }
 
 GMlib::Array <GMlib::TSTriangle<float>*> Node::getTriangles(){
