@@ -85,23 +85,20 @@ void Scenario::initializeScenario() {
 
 // FEM Visualization
 
-//  auto _t = std::make_unique<FEMObject*>(new FEMObject());
-//  (*_t)->regularTriangulation(20,15,5);
-//  (*_t)->toggleDefaultVisualizer();
-//  (*_t)->replot();
-//  scene()->insert((*_t));
+  auto _t = std::make_unique<FEMObject*>(new FEMObject());
+  (*_t)->regularTriangulation(4,3,2);
+  (*_t)->toggleDefaultVisualizer();
+  (*_t)->replot();
+  scene()->insert((*_t));
 
 //  auto _t = new FEMObject();
-//  _t->regularTriangulation(20,15,5);
+//  _t->regularTriangulation(4,3,2);
 //  _t->toggleDefaultVisualizer();
 //  _t->replot();
 //  scene()->insert(_t);
 
-//  auto _t = std::make_unique<FEMObject>();
-//  _t->regularTriangulation(20,15,5);
-//  _t->toggleDefaultVisualizer();
-//  _t->replot();
-//  scene()->insert(_t.get());
+//  std::unique_ptr<FEMObject> t = std::make_unique<FEMObject>();
+
 }
 
 void Scenario::cleanupScenario() {
