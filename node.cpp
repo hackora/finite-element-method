@@ -1,10 +1,7 @@
 #include "node.h"
 
 Node::Node(){
-    std::cout<< "constructor of nodes";
-    auto centerPoint = GMlib::Point<float,2>(0,0);
-    auto vt = GMlib::TSVertex<float>(centerPoint);
-    _vt = &vt;
+
 }
 
 GMlib::Array <GMlib::TSTriangle<float>*> Node::getTriangles(){
@@ -23,7 +20,7 @@ GMlib::TSEdge<float>* Node::neighbor(Node &n){
 
     GMlib::Array<GMlib::TSEdge<float>*> edg = _vt->getEdges();
     for(int i=0;i<edg.size();i++){
-        if (isThis(edg[i]->getOtherVertex(*_vt)))
+        if (n.isThis(edg[i]->getOtherVertex(*_vt)))
             return edg[i];
     }
     return NULL;

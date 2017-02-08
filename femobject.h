@@ -9,7 +9,7 @@ class FEMObject : public GMlib::TriangleFacets<float>
 public:
     FEMObject(): GMlib::TriangleFacets<float>(){}
 
-    ArrayLX<Node>                                      _nodes;
+    ArrayLX<Node>                                     _nodes;
     GMlib::DMatrix<float>                              _A;
     GMlib::DVector<float>                              _b;
 
@@ -23,8 +23,8 @@ public:
     GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSTriangle<float> *tr, Node *node);
 
     void localSimulate(double dt) override {
-        for (int i=0;i<1000;i++){
-           updateHeight(0.1*i);
+        for (int i=0;i<10000;i++){
+           updateHeight(i);
         }
     }
 

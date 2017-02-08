@@ -100,13 +100,13 @@ void Scenario::initializeScenario() {
 
 //  std::unique_ptr<FEMObject> t = std::make_unique<FEMObject>();
 
-  for (int i=0;i<_t->_nodes.size();i++){
-      Node node = _t->_nodes[i];
-      node._vt->setRadiusMax(4);
-      node._vt->setRadiusMin(1);
-   }
+//  for (int i=0;i<_t->_nodes.size();i++){
+//      Node node = _t->_nodes[i];
+//      node._vt->setRadiusMax(4);
+//      node._vt->setRadiusMin(1);
+//   }
 
-  _t->localSimulate(10);
+  _t->localSimulate(1.0);
 
 
 }
