@@ -16,7 +16,7 @@ public:
     void regularTriangulation(int,int,float);
     void randomTriangulation(int,float);
     void updateHeight(float);
-    //combination method I'm not sure about the signature yet
+    void combination();
 
     //compute A: 2 cases
     GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSEdge<float> *edg);

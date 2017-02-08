@@ -39,7 +39,7 @@ void FEMObject::randomTriangulation(int n, float r){
 
 }
 
-GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSEdge<float> *edg){
+GMlib::Vector<GMlib::Vector<float,2>,3> FEMObject::vectorsArray(GMlib::TSEdge<float> *edg){
 
     GMlib::Array<GMlib::TSTriangle<float>*> tr = edg->getTriangle();
     GMlib::Array<GMlib::TSVertex<float>*>   v1 = tr[0]->getVertices();
@@ -67,7 +67,7 @@ GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSEdge<flo
 
 }
 
-GMlib::Vector<GMlib::Vector<float,2>,3> vectorsArray(GMlib::TSTriangle<float> *tr, Node *node){
+GMlib::Vector<GMlib::Vector<float,2>,3> FEMObject::vectorsArray(GMlib::TSTriangle<float> *tr, Node *node){
 
     GMlib::Point<float,2> p0,p1,p2;
     GMlib::Vector<GMlib::Vector<float,2>,3> d; //output
@@ -86,5 +86,81 @@ GMlib::Vector<GMlib::Vector<float,2>,3> vectorsArray(GMlib::TSTriangle<float> *t
     d[2] = p2 - p1;
 
     return d;
+
+}
+
+void FEMObject::combination(){
+    //create array of nodes
+    //GMlib::Array<_nodes> nodes;
+
+    //set zeroes in _A
+    for(int i=0; i<_nodes.size();i++){
+        for (int j=0;j<_nodes.size();j++){
+            _A[i][j] = 0;
+        }
+    }
+
+    //computation
+
+    for (int i=0;i<_nodes.size();i++){
+
+        //Non diagonal elements
+        GMlib::Vector<GMlib::Vector<float,2>,3> d;
+        for (int j=0;j<i;j++){
+            GMlib::TSEdge<float>* edg = _nodes[i].neighbor(_nodes[j]);
+            if (edg != NULL){
+                d = vectorsArray(edg);
+                auto d0 = d[0];
+                auto d1 = d[1];
+                auto d2 = d[2];
+                auto dd =  1/ (std::abs(d0 * d0));
+                auto dh1 = dd * (d1 * d0);
+                auto dh2 = dd * (d2 * d0);
+                auto area1 = std::abs(d0^d1);
+                auto area2 = std::abs(d0^d2);
+                auto h1 = dd * area1 * area1;
+                auto h2 = dd * area2 * area2;
+
+                _A[i][j] = (dh1 * (1 - dh1) / h1 - dd) * area1 * 0.5 +
+                           (dh2 * (1 - dh2) / h2 - dd) * area2 * 0.5;
+
+                _A[j][i] = (dh1 * (1 - dh1) / h1 - dd) * area1 * 0.5 +
+                           (dh2 * (1 - dh2) / h2 - dd) * area2 * 0.5;
+
+            }
+        }
+
+        //Diagonal elements
+        GMlib::Array <GMlib::TSTriangle<float>*> tr = _nodes[i].getTriangles();
+        float Tk;
+        for (int k=0;k<tr.size();k++){
+           d = vectorsArray(tr[k],&_nodes[i]);
+           auto d0 = d[0];
+           auto d1 = d[1];
+           auto d2 = d[2];
+           Tk += (d2 * d2) / (d0 ^ d1) * 0.5;
+        }
+
+        _A[i][i] = Tk;
+    }
+
+    for (int i=0;i<_nodes.size();i++){
+        GMlib::Array <GMlib::TSTriangle<float>*> tr = _nodes[i].getTriangles();
+        for (int k=0;k<tr.size();k++){
+            _b[i] = tr[k]->getArea2D()/3;
+        }
+    }
+
+}
+
+void FEMObject::updateHeight(float F){
+
+    //Solving AX=b
+    _A.invert();
+
+    GMlib::DVector<float> X = _A * F * _b;
+    for (int i=0;i<_nodes.size();i++){
+        _nodes[i]._vt->setZ(X[i]);
+    }
 
 }
