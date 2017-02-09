@@ -1,6 +1,6 @@
 #include "femobject.h"
 #include <gmCoreModule>
-
+#include <QDebug>
 //FEMObject::FEMObject(){
 //}
 
@@ -106,6 +106,7 @@ GMlib::Vector<GMlib::Vector<float,2>,3> FEMObject::vectorsArray(GMlib::TSTriangl
 void FEMObject::computation(){
     //populate _nodes
 
+
     for (int i=0;i<this->size();i++){
         auto edges = this->getVertex(i)->getEdges() ;
         if (!(this->getVertex(i)->boundary())) {
@@ -118,6 +119,7 @@ void FEMObject::computation(){
     }
 
     _A.setDim(_nodes.size(),_nodes.size());
+    _b.setDim(_nodes.size());
     //set zeroes in _A
         for(int i=0; i<_A.getDim1();i++){
             for (int j=0;j<_A.getDim2();j++){
@@ -157,30 +159,29 @@ void FEMObject::computation(){
         //Diagonal elements
         GMlib::Array <GMlib::TSTriangle<float>*> tr = _nodes[i].getTriangles();
         float Tk =0.0;
+        float sum=0;
         for (int k=0;k<tr.size();k++){
            d = vectorsArray(tr[k],&_nodes[i]);
            auto d0 = d[0];
            auto d1 = d[1];
            auto d2 = d[2];
            Tk += (d2 * d2) / std::abs(d0 ^ d1) * 0.5;
+           sum += tr[k]->getArea2D()/3;
         }
         _A[i][i] = Tk;
-    }
-
-    for(int i=0; i<_A.getDim1();i++){
-        for (int j=0;j<_A.getDim2();j++){
-           std::cout<< _A[i][j]<< ' ';
-        }
-    }
-
-    for (int i=0;i<_nodes.size();i++){
-        GMlib::Array <GMlib::TSTriangle<float>*> tr = _nodes[i].getTriangles();
-        float sum=0;
-        for (int k=0;k<tr.size();k++){
-            sum += tr[k]->getArea2D()/3;
-        }
         _b[i] = sum;
     }
+
+//    for(int i=0; i<_A.getDim1();i++){
+//        for (int j=0;j<_A.getDim2();j++){
+//           std::cout<< _A[i][j]<<"            ";
+//        }
+//        std::cout<<'\n';
+//    }
+//    std::cout<<"b follows"<<'\n';
+//    for(int i=0; i<_A.getDim1();i++){
+//        std::cout<<_b[i]<< ' ';
+//    }
 
     _A.invert();
 
@@ -190,10 +191,8 @@ void FEMObject::updateHeight(float F){
 
     //Solving AX=b
 
-//    GMlib::DVector<float> X = _A * _b;
-//    X *=F;
-//    for (int i=0;i<_nodes.size();i++){
-//        _nodes[i]._vt->setZ(X[i]);
-//    }
-    //std::cout<<X<<'\n';
+    GMlib::DVector<float> X = _A * F*_b;
+    for (int i=0;i<_nodes.size();i++){
+        _nodes[i]._vt->setZ(X[i]);
+    }
 }

@@ -93,8 +93,9 @@ void Scenario::initializeScenario() {
 
   auto _t = new FEMObject();
   //_t->regularTriangulation(4,3,2);
-  _t->randomTriangulation(30,5);
+  _t->randomTriangulation(35,5);
   _t->computation();
+  _t->updateHeight(1);
   _t->toggleDefaultVisualizer();
   _t->replot();
   scene()->insert(_t);
