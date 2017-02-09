@@ -16,7 +16,6 @@ void FEMObject::regularTriangulation(int n, int m, float r){
             this->insertAlways(pt);
         }
     }
-    //this->triangulateDelaunay();
 }
 
 
@@ -48,8 +47,6 @@ void FEMObject::randomTriangulation(int n, float r){
         else
             this->removeIndex(i);
     }
-
-    this->triangulateDelaunay();
 
 }
 
@@ -104,7 +101,11 @@ GMlib::Vector<GMlib::Vector<float,2>,3> FEMObject::vectorsArray(GMlib::TSTriangl
 }
 
 void FEMObject::computation(){
-    //populate _nodes
+
+    //Triangulate
+    this->triangulateDelaunay();
+
+    //Populate _nodes
 
 
     for (int i=0;i<this->size();i++){
@@ -118,20 +119,23 @@ void FEMObject::computation(){
         }
     }
 
+    //Set dimensions for _A and _b : very important!
+
     _A.setDim(_nodes.size(),_nodes.size());
     _b.setDim(_nodes.size());
-    //set zeroes in _A
+
+    //Set zeroes in _A
         for(int i=0; i<_A.getDim1();i++){
             for (int j=0;j<_A.getDim2();j++){
                 _A[i][j] = 0;
             }
         }
 
-    //computation
+    //Computation of _A matrix and _b
 
     for (int i=0;i<_nodes.size();i++){
 
-        //Non diagonal elements
+        //Non diagonal elements of _A
         GMlib::Vector<GMlib::Vector<float,2>,3> d;
         for (int j=0;j<i;j++){
             GMlib::TSEdge<float>* edg = _nodes[i].neighbor(_nodes[j]);
@@ -156,7 +160,7 @@ void FEMObject::computation(){
             }
         }
 
-        //Diagonal elements
+        //Diagonal elements of _A and _b
         GMlib::Array <GMlib::TSTriangle<float>*> tr = _nodes[i].getTriangles();
         float Tk =0.0;
         float sum=0;
@@ -191,7 +195,7 @@ void FEMObject::updateHeight(float F){
 
     //Solving AX=b
 
-    GMlib::DVector<float> X = _A * F*_b;
+    GMlib::DVector<float> X = _A * F * _b;
     for (int i=0;i<_nodes.size();i++){
         _nodes[i]._vt->setZ(X[i]);
     }

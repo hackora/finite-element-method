@@ -92,15 +92,14 @@ void Scenario::initializeScenario() {
 //  scene()->insert((*_t));
 
   auto _t = new FEMObject();
-  //_t->regularTriangulation(4,3,2);
-  _t->randomTriangulation(35,5);
+  //_t->regularTriangulation(40,5,5);
+  _t->randomTriangulation(40,5);
   _t->computation();
   _t->updateHeight(1);
   _t->toggleDefaultVisualizer();
+  _t->setMaterial(GMlib::GMmaterial::polishedRed());
   _t->replot();
   scene()->insert(_t);
-
-//  std::unique_ptr<FEMObject> t = std::make_unique<FEMObject>();
 
 }
 
