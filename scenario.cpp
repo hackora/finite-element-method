@@ -93,6 +93,7 @@ void Scenario::initializeScenario() {
 
   auto _t = new FEMObject();
   _t->regularTriangulation(4,3,2);
+  //_t->randomTriangulation(4,2);
   _t->computation();
   _t->toggleDefaultVisualizer();
   _t->replot();
@@ -100,11 +101,6 @@ void Scenario::initializeScenario() {
 
 //  std::unique_ptr<FEMObject> t = std::make_unique<FEMObject>();
 
-  for (int i=0;i<_t->_nodes.size();i++){
-      Node node = _t->_nodes[i];
-      node._vt->setRadiusMax(10);
-      node._vt->setRadiusMin(1);
-   }
 
   _t->localSimulate(5);
 

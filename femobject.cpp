@@ -16,7 +16,7 @@ void FEMObject::regularTriangulation(int n, int m, float r){
             this->insertAlways(pt);
         }
     }
-    this->triangulateDelaunay(); 
+    this->triangulateDelaunay();
 }
 
 
@@ -26,14 +26,28 @@ void FEMObject::randomTriangulation(int n, float r){
     auto rn = 4;
     auto m = n/rn;
     regularTriangulation(rn,m,r);
-    auto nm = std::max(M_PI / (std::sqrt(3*sin(M_PI/n)*sin(M_PI/n)+2-n)*0.5/n), (1.1));
+    auto nm = std::max(M_PI / ((std::sqrt(3)*sin(M_PI/n)*sin(M_PI/n)+2-n)*0.5/n), (1.1));
     auto num = 1 + n *nm;
     int t = num * 0.8;
-    for (int i=0;i<t;i++){
-        std::swap(this[rand.get()],this[rand.get()]);
+    int size;
+    if (t < this->size()){
+        size = t;
+    }
+    else
+        size = this->size();
+    for (int i=0;i<size;i++){
+        std::swap((*this)[rand.get()],(*this)[rand.get()]);
     }
     //TODO: Remove all elements after index num that are not on the boundary
 
+    for (int i=num;i<size;i++){
+        if (!(this->getVertex(i)->boundary())){
+            std::cout<<"I am a boundary vertex : second half"<<'\n';
+            this->removeIndex(i);
+        }
+    }
+
+    //this->triangulateDelaunay();
 
 }
 
@@ -91,6 +105,7 @@ void FEMObject::computation(){
     //populate _nodes
 
     for (int i=0;i<this->size();i++){
+        auto edges = this->getVertex(i)->getEdges() ;
         if (!(this->getVertex(i)->boundary())) {
             GMlib::TSVertex<float>* vt = this->getVertex(i) ;
              Node node = Node();
@@ -98,6 +113,8 @@ void FEMObject::computation(){
              //_nodes.operator +=(node); //bug
              _nodes.insertAlways(node,true);
         }
+        else
+            std::cout<<"Iam a boundary"<< this->getVertex(i)->getParameter()<<'\n';
     }
 
     _A.setDim(_nodes.size(),_nodes.size());
@@ -132,8 +149,7 @@ void FEMObject::computation(){
                 _A[i][j] = (dh1 * (1 - dh1) / h1 - dd) * area1 * 0.5 +
                            (dh2 * (1 - dh2) / h2 - dd) * area2 * 0.5;
 
-                _A[j][i] = (dh1 * (1 - dh1) / h1 - dd) * area1 * 0.5 +
-                           (dh2 * (1 - dh2) / h2 - dd) * area2 * 0.5;
+                _A[j][i] = _A[i][j];
 
             }
         }
@@ -151,11 +167,19 @@ void FEMObject::computation(){
         _A[i][i] = Tk;
     }
 
+    for(int i=0; i<_A.getDim1();i++){
+        for (int j=0;j<_A.getDim2();j++){
+           //std::cout<< _A[i][j]<< '\n';
+        }
+    }
+
     for (int i=0;i<_nodes.size();i++){
         GMlib::Array <GMlib::TSTriangle<float>*> tr = _nodes[i].getTriangles();
+        float sum=0;
         for (int k=0;k<tr.size();k++){
-            _b[i] = tr[k]->getArea2D()/3;
+            sum += tr[k]->getArea2D()/3;
         }
+        _b[i] = sum;
     }
 
     _A.invert();
@@ -166,8 +190,10 @@ void FEMObject::updateHeight(float F){
 
     //Solving AX=b
 
-    GMlib::DVector<float> X = _A * F * _b;
+    GMlib::DVector<float> X = _A * _b;
+    X *=F;
     for (int i=0;i<_nodes.size();i++){
         _nodes[i]._vt->setZ(X[i]);
     }
+    //std::cout<<X<<'\n';
 }
