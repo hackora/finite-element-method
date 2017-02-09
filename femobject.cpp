@@ -25,26 +25,24 @@ void FEMObject::randomTriangulation(int n, float r){
     auto m = n/rn;
     regularTriangulation(rn,m,r);
     auto nm = std::max(M_PI / ((std::sqrt(3)*sin(M_PI/n)*sin(M_PI/n)+2-n)*0.5/n), (1.1));
-    //auto nm = 0.2;
     int num = 1 + n *nm;
     int t = num * 0.8;
+    auto epsilon = 1e-5;
+
+    //Initialize and seed rand
     GMlib::Random<int> rand;
     rand.set(0, this->size());
     rand.setSeed(3);
-    auto epsilon = 1e-5;
+
     for (int i=0;i<t;i++){
         std::swap((*this)[rand.get()],(*this)[rand.get()]);
     }
-    //TODO: Remove all elements after index num that are not on the boundary
 
     for (int i=num;i<this->size();i++){
-        auto parameters = this->getVertex(i)->getParameter();
-        auto distanceFromCenter = std::sqrt ((parameters[0]* parameters[0]) -
-                                              (parameters[1] * parameters[1]) );
-        if( std::abs(distanceFromCenter - r) <= epsilon){
-            std::cout<<"I am a boundary vertex : second half"<<'\n';
-        }
-        else
+        auto boundaryVertex = this->getVertex(i)->getParameter();
+        auto distanceFromCenter = std::sqrt ((boundaryVertex[0]* boundaryVertex[0]) -
+                                              (boundaryVertex[1] * boundaryVertex[1]) );
+        if( std::abs(distanceFromCenter - r) > epsilon)
             this->removeIndex(i);
     }
 
