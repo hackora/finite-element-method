@@ -2,7 +2,6 @@
 #include <gmCoreModule>
 
 //FEMObject::FEMObject(){
-//set the _nodes Array : means set _vt of every node
 //}
 
 void FEMObject::regularTriangulation(int n, int m, float r){
@@ -92,11 +91,12 @@ void FEMObject::computation(){
     //populate _nodes
 
     for (int i=0;i<this->size();i++){
-        if (!this->getVertex(i)->boundary()) {
+        if (!(this->getVertex(i)->boundary())) {
             GMlib::TSVertex<float>* vt = this->getVertex(i) ;
              Node node = Node();
              node._vt = vt;
-             _nodes += node;
+             //_nodes.operator +=(node); //bug
+             _nodes.insertAlways(node,true);
         }
     }
 
@@ -154,7 +154,7 @@ void FEMObject::computation(){
     for (int i=0;i<_nodes.size();i++){
         GMlib::Array <GMlib::TSTriangle<float>*> tr = _nodes[i].getTriangles();
         for (int k=0;k<tr.size();k++){
-            _b[i] = tr[k]->getArea()/3;
+            _b[i] = tr[k]->getArea2D()/3;
         }
     }
 

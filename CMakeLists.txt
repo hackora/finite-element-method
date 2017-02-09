@@ -14,7 +14,8 @@ if(MSVC)
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Werror")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall")
+
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
 
