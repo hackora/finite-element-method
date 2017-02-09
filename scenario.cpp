@@ -92,18 +92,14 @@ void Scenario::initializeScenario() {
 //  scene()->insert((*_t));
 
   auto _t = new FEMObject();
-  _t->regularTriangulation(4,3,2);
-  //_t->randomTriangulation(4,2);
+  //_t->regularTriangulation(4,3,2);
+  _t->randomTriangulation(30,5);
   _t->computation();
   _t->toggleDefaultVisualizer();
   _t->replot();
   scene()->insert(_t);
 
 //  std::unique_ptr<FEMObject> t = std::make_unique<FEMObject>();
-
-
-  _t->localSimulate(5);
-
 
 }
 

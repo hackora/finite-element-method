@@ -23,7 +23,7 @@ public:
     GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSTriangle<float> *tr, Node *node);
 
     void localSimulate(double dt) override {
-       updateHeight(dt*10);
+       updateHeight(dt*2);
     }
 
 };
