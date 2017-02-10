@@ -30,7 +30,7 @@ void FEMObject::randomTriangulation(int n, float r){
     regularTriangulation(rn,m,r);
     auto nm = std::max(((M_PI / (std::sqrt(3)*sin(M_PI/n)*sin(M_PI/n))+ 2 -n ) / n *0.5), (1.1));
     int num = 1 + n *nm;
-    int t = num * 0.8;
+    //int t = num * 0.8;
     auto epsilon = 1e-5;
 
     //Initialize and seed GMLib rand
@@ -183,17 +183,6 @@ void FEMObject::computation(){
         _A[i][i] = Tk;
         _b[i] = sum;
     }
-
-//    for(int i=0; i<_A.getDim1();i++){
-//        for (int j=0;j<_A.getDim2();j++){
-//           std::cout<< _A[i][j]<<"            ";
-//        }
-//        std::cout<<'\n';
-//    }
-//    std::cout<<"b follows"<<'\n';
-//    for(int i=0; i<_A.getDim1();i++){
-//        std::cout<<_b[i]<< ' ';
-//    }
 
     _A.invert();
 

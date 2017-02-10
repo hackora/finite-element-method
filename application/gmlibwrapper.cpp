@@ -1,6 +1,5 @@
 #include "gmlibwrapper.h"
 
-#include "../testtorus.h"
 #include "utils.h"
 
 

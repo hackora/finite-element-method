@@ -1,9 +1,4 @@
 #include "scenario.h"
-
-#include "testtorus.h"
-
-#include "simulator.h"
-
 #include "femobject.h"
 
 //// hidmanager
@@ -120,7 +115,5 @@ void Scenario::animation(){
 }
 
 void Scenario::cleanupScenario() {
-
-    _simulator.reset();
 
 }

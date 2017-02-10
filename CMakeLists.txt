@@ -124,9 +124,7 @@ set( HDRS
   application/window.h
   application/utils.h
 
-  testtorus.h
   scenario.h
-  simulator.h
 
   femobject.h
   node.h
@@ -151,7 +149,6 @@ set( SRCS
   application/main.cpp
 
   scenario.cpp
-  simulator.cpp
 
   femobject.cpp
   node.cpp

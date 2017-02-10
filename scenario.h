@@ -1,7 +1,6 @@
 #ifndef SCENARIO_H
 #define SCENARIO_H
 
-class Simulator;
 class FEMObject;
 
 #include "application/gmlibwrapper.h"
@@ -21,8 +20,6 @@ public:
   FEMObject*  _tRegular;
   FEMObject*  _tRandom;
 
-private:
-  std::shared_ptr<Simulator> _simulator;
 };
 
 #endif // SCENARIO_H
