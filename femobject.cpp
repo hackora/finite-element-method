@@ -1,6 +1,10 @@
 #include "femobject.h"
 #include <gmCoreModule>
 #include <QDebug>
+
+// For random triangulation
+#include <stdlib.h>
+#include <time.h>
 //FEMObject::FEMObject(){
 //}
 
@@ -29,18 +33,24 @@ void FEMObject::randomTriangulation(int n, float r){
     int t = num * 0.8;
     auto epsilon = 1e-5;
 
-    //Initialize and seed rand
-    GMlib::Random<int> rand;
-    rand.set(0, this->size());
-    rand.setSeed(3);
+    //Initialize and seed GMLib rand
+//    GMlib::Random<int> rand;
+//    rand.set(0, this->size());
+//    rand.setSeed(n+r*t);
+
+
+    //initialize random seed:
+      srand (time(NULL));
 
     for (int i=0;i<t;i++){
-        std::swap((*this)[rand.get()],(*this)[rand.get()]);
+        //std::swap((*this)[rand.get()],(*this)[rand.get()]); GMlib random always generates the same numbers
+          std::swap((*this)[rand() % this->size()],(*this)[rand() % this->size()]); // rand() works better
+
     }
 
     for (int i=num;i<this->size();i++){
         auto boundaryVertex = this->getVertex(i)->getParameter();
-        auto distanceFromCenter = std::sqrt ((boundaryVertex[0]* boundaryVertex[0]) -
+        auto distanceFromCenter = std::sqrt ((boundaryVertex[0]* boundaryVertex[0]) +
                                               (boundaryVertex[1] * boundaryVertex[1]) );
         if( std::abs(distanceFromCenter - r) > epsilon)
             this->removeIndex(i);

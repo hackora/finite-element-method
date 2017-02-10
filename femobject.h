@@ -3,6 +3,7 @@
 
 #include <gmTrianglesystemModule>
 #include "node.h"
+#include <QDebug>
 
 class FEMObject : public GMlib::TriangleFacets<float>
 {
@@ -22,9 +23,10 @@ public:
     GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSEdge<float> *edg);
     GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSTriangle<float> *tr, Node *node);
 
-    void localSimulate(double dt) override {
-       updateHeight(dt*1);
-    }
+//    void localSimulate(double dt) override {
+//       qDebug()<<dt<<'\n';
+//       this->updateHeight(1 * dt);
+//    }
 
 };
 

@@ -91,16 +91,26 @@ void Scenario::initializeScenario() {
 //  (*_t)->replot();
 //  scene()->insert((*_t));
 
-  auto _t = new FEMObject();
-  //_t->regularTriangulation(40,5,5);
-  _t->randomTriangulation(40,5);
-  _t->computation();
-  _t->updateHeight(1);
-  _t->toggleDefaultVisualizer();
-  _t->setMaterial(GMlib::GMmaterial::polishedRed());
-  _t->replot();
-  scene()->insert(_t);
+  auto _tRegular = new FEMObject();
+  auto _tRandom = new FEMObject();
+  _tRegular->regularTriangulation(40,5,5);
+  _tRegular->computation();
+  _tRegular->updateHeight(1);
+  _tRegular->toggleDefaultVisualizer();
+  _tRegular->setMaterial(GMlib::GMmaterial::turquoise());
+  _tRandom->translateGlobal(GMlib::Vector<float,3>{-10.0f,0.0f,-5.0f});
+  _tRegular->rotate( GMlib::Angle(180) * 0.1, GMlib::Vector<float,3>( 1.0f, 1.0f, 0.0f ) );
+  _tRegular->replot();
+  scene()->insert(_tRegular);
 
+  _tRandom->randomTriangulation(40,5);
+  _tRandom->computation();
+  _tRandom->updateHeight(2);
+  _tRandom->toggleDefaultVisualizer();
+  _tRandom->setMaterial(GMlib::GMmaterial::polishedRed());
+  _tRandom->rotate( GMlib::Angle(90) * 0.1, GMlib::Vector<float,3>( 0.0f, 0.0f, 1.0f ) );
+  _tRandom->replot();
+  scene()->insert(_tRandom);
 }
 
 void Scenario::cleanupScenario() {
