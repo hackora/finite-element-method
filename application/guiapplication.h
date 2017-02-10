@@ -14,6 +14,8 @@ namespace GMlib {
   class Scene;
 }
 
+class FEMObject;
+
 // qt
 #include <QGuiApplication>
 
@@ -38,6 +40,7 @@ private slots:
   virtual void                                onSceneGraphInitialized();
   virtual void                                onSceneGraphInvalidated();
   virtual void                                afterOnSceneGraphInitialized();
+  void                                        animateFEM();
 
 signals:
   void                                        signOnSceneGraphInitializedDone();

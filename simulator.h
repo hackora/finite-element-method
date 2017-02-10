@@ -5,6 +5,7 @@
 #include<gmParametricsModule>
 #include<vector>
 #include<memory>
+#include "femobject.h"
 
 //helper types
 using DynSphere = collision::DynamicPhysObject<GMlib::PSphere<float>>;

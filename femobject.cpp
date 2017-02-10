@@ -28,7 +28,7 @@ void FEMObject::randomTriangulation(int n, float r){
     auto rn = 4;
     auto m = n/rn;
     regularTriangulation(rn,m,r);
-    auto nm = std::max(M_PI / ((std::sqrt(3)*sin(M_PI/n)*sin(M_PI/n)+2-n)*0.5/n), (1.1));
+    auto nm = std::max(((M_PI / (std::sqrt(3)*sin(M_PI/n)*sin(M_PI/n))+ 2 -n ) / n *0.5), (1.1));
     int num = 1 + n *nm;
     int t = num * 0.8;
     auto epsilon = 1e-5;
@@ -42,7 +42,7 @@ void FEMObject::randomTriangulation(int n, float r){
     //initialize random seed:
       srand (time(NULL));
 
-    for (int i=0;i<t;i++){
+    for (int i=0;i<1000;i++){
         //std::swap((*this)[rand.get()],(*this)[rand.get()]); GMlib random always generates the same numbers
           std::swap((*this)[rand() % this->size()],(*this)[rand() % this->size()]); // rand() works better
 
@@ -207,4 +207,9 @@ void FEMObject::updateHeight(float F){
     for (int i=0;i<_nodes.size();i++){
         _nodes[i]._vt->setZ(X[i]);
     }
+}
+
+void FEMObject::setMaxForce(double f){
+
+    _maxForce = f;
 }

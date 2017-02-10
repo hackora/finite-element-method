@@ -17,6 +17,7 @@
 // stl
 #include <cassert>
 
+class FEMObject;
 
 std::unique_ptr<GuiApplication> GuiApplication::_instance {nullptr};
 
@@ -101,6 +102,8 @@ GuiApplication::afterOnSceneGraphInitialized() {
   // QQuickWindow's beforeRendering singnal provides that on a DirectConnection
   connect( &_window, &Window::beforeRendering,        &_hidmanager, &DefaultHidManager::triggerOGLActions,
            Qt::DirectConnection );
+  connect(&_window, &Window::beforeRendering, this, &GuiApplication::animateFEM,
+          Qt::DirectConnection);
 
   // Register an application close event in the hidmanager;
   // the QWindow must be closed instead of the application being quitted,
@@ -124,3 +127,7 @@ GuiApplication::afterOnSceneGraphInitialized() {
 }
 
 const GuiApplication& GuiApplication::instance() {  return *_instance; }
+
+void GuiApplication::animateFEM(){
+    _scenario.animation();
+}
