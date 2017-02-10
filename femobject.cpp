@@ -202,3 +202,13 @@ void FEMObject::setMaxForce(double f){
 
     _maxForce = f;
 }
+
+void FEMObject::localSimulate(double dt){
+
+    if(abs(_force) >= _maxForce)
+        goingUp *= -1;
+    _force +=  goingUp *dt;
+
+    updateHeight(_force);
+
+}

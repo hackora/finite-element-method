@@ -27,15 +27,7 @@ public:
     GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSEdge<float> *edg);
     GMlib::Vector<GMlib::Vector<float,2>,3>           vectorsArray(GMlib::TSTriangle<float> *tr, Node *node);
 
-    void localSimulate(double dt) override {
-
-        if(abs(_force) >= _maxForce)
-            goingUp *= -1;
-        _force +=  goingUp *dt;
-
-        updateHeight(_force);
-
-    }
+    void localSimulate(double dt) override;
 
 };
 
