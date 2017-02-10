@@ -19,6 +19,7 @@ public:
   void    cleanupScenario() override;
   void    animation();
   FEMObject*  _tRegular;
+  FEMObject*  _tRandom;
 
 private:
   std::shared_ptr<Simulator> _simulator;
