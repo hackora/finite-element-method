@@ -9,6 +9,7 @@ class FEMObject;
 #include <QObject>
 
 
+
 class Scenario : public GMlibWrapper {
   Q_OBJECT
 public:

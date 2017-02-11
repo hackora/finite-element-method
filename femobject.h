@@ -8,7 +8,7 @@
 class FEMObject : public GMlib::TriangleFacets<float>
 {
 public:
-    FEMObject(): GMlib::TriangleFacets<float>(){ _force=0; goingUp=1;}
+    FEMObject(): GMlib::TriangleFacets<float>(){ _force=0; goingUp=1; changeForce=false;}
 
     ArrayLX<Node>                                      _nodes;
     GMlib::DMatrix<float>                              _A;
@@ -16,6 +16,7 @@ public:
     double                                             _maxForce;
     double                                             _force;
     int                                                goingUp;
+    bool                                               changeForce;
 
     void regularTriangulation(int,int,float);
     void randomTriangulation(int,float);

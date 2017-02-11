@@ -125,6 +125,7 @@ void FEMObject::computation(){
              //_nodes.operator +=(node); //bug
              _nodes.insertAlways(node,true);
         }
+
     }
 
     //Set dimensions for _A and _b : very important!
@@ -205,10 +206,28 @@ void FEMObject::setMaxForce(double f){
 
 void FEMObject::localSimulate(double dt){
 
-    if(abs(_force) >= _maxForce)
-        goingUp *= -1;
-    _force +=  goingUp *dt;
 
-    updateHeight(_force);
+    updateHeight(_maxForce*std::sin(_force));
+    _force +=  dt;
+
+
+//    if(_maxForce > 0.1)
+//        _maxForce -= dt;
+
+//    updateHeight(_force);
+
+//    if(std::abs(_force) >= _maxForce){
+//        goingUp *= -1;
+//        changeForce = true;
+//    }
+//    _force +=  goingUp *dt;
+//    if (changeForce && std::abs(_force)<2*dt && _maxForce >10*dt){
+//        setMaxForce(_maxForce/2);
+//        changeForce = false;
+//    }
+
+//    qDebug()<<_maxForce;
+
+
 
 }

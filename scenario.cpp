@@ -90,19 +90,35 @@ void Scenario::initializeScenario() {
   _tRandom = new FEMObject();
 
   _tRegular->setMaxForce(2);
-  _tRegular->regularTriangulation(20,5,5);
+  _tRegular->regularTriangulation(20,5,8);
   _tRegular->computation();
   _tRegular->toggleDefaultVisualizer();
   _tRegular->setMaterial(GMlib::GMmaterial::turquoise());
-  _tRandom->translateGlobal(GMlib::Vector<float,3>{-10.0f,0.0f,-5.0f});
+  _tRegular->translateGlobal(GMlib::Vector<float,3>{8.0f,0.0f,0.0f});
+  _tRegular->rotate( GMlib::Angle(180), GMlib::Vector<float,3>( 0.0f, 1.0f, 0.0f) );
   _tRegular->replot();
   scene()->insert(_tRegular);
 
+
   _tRandom->setMaxForce(2);
-  _tRandom->randomTriangulation(40,5);
+  _tRandom->randomTriangulation(80,8);
   _tRandom->computation();
+//  qDebug()<<_tRandom->size();
+//  auto nodes= _tRandom->_nodes;
+//   for (int i=0;i<nodes.size() ;i++){
+//       auto sphere = new GMlib::PSphere<float>(i);
+//       auto vect = nodes[i]._vt->getDir();
+//       auto pos = nodes[i]._vt->getPos();
+//       sphere->translateGlobal(vect);
+//       sphere->toggleDefaultVisualizer();
+//       sphere->replot(10, 10, 1,1);
+//       scene()->insert(sphere);
+
+
+//   }
   _tRandom->toggleDefaultVisualizer();
   _tRandom->setMaterial(GMlib::GMmaterial::polishedRed());
+  _tRandom->translateGlobal(GMlib::Vector<float,3>{-8.0f,0.0f,0.0f});
   _tRandom->replot();
   scene()->insert(_tRandom);
 
