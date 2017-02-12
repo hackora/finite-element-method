@@ -64,20 +64,6 @@ void Scenario::initializeScenario() {
   top_rcpair.renderer->reshape( GMlib::Vector<int,2>(init_viewport_size, init_viewport_size) );
 
 
-//default scenario (torus)
-  // Surface visualizers
-//  auto surface_visualizer = new GMlib::PSurfNormalsVisualizer<float,3>;
-
-//  // Surface
-//  auto surface = new TestTorus;
-//  surface->toggleDefaultVisualizer();
-//  surface->insertVisualizer(surface_visualizer);
-//  surface->replot(200,200,1,1);
-//  scene()->insert(surface);
-
-//  surface->test01();
-
-
 // FEM Visualization
 
 //  auto _t = std::make_unique<FEMObject*>(new FEMObject());
@@ -90,8 +76,19 @@ void Scenario::initializeScenario() {
   _tRandom = new FEMObject();
 
   _tRegular->setMaxForce(2);
-  _tRegular->regularTriangulation(20,5,8);
+  _tRegular->regularTriangulation(10,3,4);
   _tRegular->computation();
+  for (int i=0;i<_tRegular->size() ;i++){
+      if (!_tRegular->getVertex(i)->boundary()){
+          auto sphere = new GMlib::PSphere<float> (0.1);
+          sphere->set(_tRegular->getVertex(i)->getPos(), GMlib::Vector<float,3>(1.0f,0.0f,0.0f),  GMlib::Vector<float,3>(0.0f,0.0f,1.0f));
+          sphere->translateGlobal(GMlib::Vector<float,3>{8.0f,0.0f,0.0f});
+          sphere->setMaterial(GMlib::GMmaterial::blackPlastic());
+          sphere->toggleDefaultVisualizer();
+          sphere->replot(10,10,1,1);
+          scene()->insert(sphere);
+      }
+  }
   _tRegular->toggleDefaultVisualizer();
   _tRegular->setMaterial(GMlib::GMmaterial::turquoise());
   _tRegular->translateGlobal(GMlib::Vector<float,3>{8.0f,0.0f,0.0f});
@@ -101,21 +98,21 @@ void Scenario::initializeScenario() {
 
 
   _tRandom->setMaxForce(2);
-  _tRandom->randomTriangulation(80,8);
+  _tRandom->randomTriangulation(40,4);
   _tRandom->computation();
-//  qDebug()<<_tRandom->size();
-//  auto nodes= _tRandom->_nodes;
-//   for (int i=0;i<nodes.size() ;i++){
-//       auto sphere = new GMlib::PSphere<float>(i);
-//       auto vect = nodes[i]._vt->getDir();
-//       auto pos = nodes[i]._vt->getPos();
-//       sphere->translateGlobal(vect);
-//       sphere->toggleDefaultVisualizer();
-//       sphere->replot(10, 10, 1,1);
-//       scene()->insert(sphere);
 
+    for (int i=0;i<_tRandom->size() ;i++){
+        if (!_tRandom->getVertex(i)->boundary()){
+            auto sphere = new GMlib::PSphere<float> (0.1);
+            sphere->set(_tRandom->getVertex(i)->getPos(), GMlib::Vector<float,3>(1.0f,0.0f,0.0f),  GMlib::Vector<float,3>(0.0f,0.0f,1.0f));
+            sphere->translateGlobal(GMlib::Vector<float,3>{-8.0f,0.0f,0.0f});
+            sphere->setMaterial(GMlib::GMmaterial::blackPlastic());
+            sphere->toggleDefaultVisualizer();
+            sphere->replot(10,10,1,1);
+            scene()->insert(sphere);
+        }
+    }
 
-//   }
   _tRandom->toggleDefaultVisualizer();
   _tRandom->setMaterial(GMlib::GMmaterial::polishedRed());
   _tRandom->translateGlobal(GMlib::Vector<float,3>{-8.0f,0.0f,0.0f});
