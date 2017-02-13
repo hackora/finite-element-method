@@ -21,6 +21,9 @@ public:
   FEMObject*  _tRegular;
   FEMObject*  _tRandom;
 
+  void regularFem();
+  void randomFem();
+
 };
 
 #endif // SCENARIO_H

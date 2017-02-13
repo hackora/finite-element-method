@@ -194,8 +194,10 @@ void FEMObject::updateHeight(float F){
     //Solving AX=b
 
     GMlib::DVector<float> X = _A * F * _b;
-    for (int i=0;i<_nodes.size();i++){
+
+     for (unsigned int i=0;i<this->spheres.size() ;i++){
         _nodes[i]._vt->setZ(X[i]);
+        spheres[i]->set(_nodes[i]._vt->getPos()+this->getPos(), GMlib::Vector<float,3>(1.0f,0.0f,0.0f),  GMlib::Vector<float,3>(0.0f,0.0f,1.0f));
     }
 }
 
@@ -204,11 +206,24 @@ void FEMObject::setMaxForce(double f){
     _maxForce = f;
 }
 
+void FEMObject::findSpheresPos(){
+
+    for (int i=0;i<this->size();i++){
+        if (!this->getVertex(i)->boundary()){
+            GMlib::PSphere<float> *sphere = new GMlib::PSphere<float> (0.1);
+            sphere->set(this->getVertex(i)->getPos(), this->getGlobalDir(),  this->getGlobalUp());
+            spheres.emplace_back(sphere);
+       }
+    }
+}
+
 void FEMObject::localSimulate(double dt){
 
 
     updateHeight(_maxForce*std::sin(_force));
     _force +=  dt;
+
+    // update spheres position
 
 
 //    if(_maxForce > 0.1)
