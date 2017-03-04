@@ -59,7 +59,7 @@ void Scenario::initializeScenario() {
   // Top cam
   auto top_rcpair = createRCPair("Top");
   top_rcpair.camera->set( init_cam_pos + GMlib::Vector<float,3>( 0.0f, 0.0f, 50.0f ), -init_cam_up, init_cam_dir );
-  top_rcpair.camera->setCuttingPlanes( 1.0f, 20.0f );
+  top_rcpair.camera->setCuttingPlanes( 1.0f, 8000.0f );
   scene()->insertCamera( top_rcpair.camera.get() );
   top_rcpair.renderer->reshape( GMlib::Vector<int,2>(init_viewport_size, init_viewport_size) );
 
@@ -75,22 +75,22 @@ void Scenario::initializeScenario() {
   _tRegular = new FEMObject();
   _tRandom = new FEMObject();
 
-  _tRegular->setMaxForce(2);
-  _tRegular->regularTriangulation(10,3,4);
-  _tRegular->computation();
-  //_tRegular->rotate( GMlib::Angle(180), GMlib::Vector<float,3>( 0.0f, 1.0f, 0.0f) );
-   _tRegular->findSpheresPos();
-  for (unsigned int i=0;i<_tRegular->spheres.size() ;i++){
-      auto sphere=  _tRegular->spheres[i];
-      sphere->setMaterial(GMlib::GMmaterial::blackPlastic());
-      sphere->toggleDefaultVisualizer();
-      sphere->replot(10,10,1,1);
-      scene()->insert(sphere);
-  }
-  _tRegular->toggleDefaultVisualizer();
-  _tRegular->setMaterial(GMlib::GMmaterial::turquoise());
-  _tRegular->replot();
-  scene()->insert(_tRegular);
+//  _tRegular->setMaxForce(2);
+//  _tRegular->regularTriangulation(10,3,4);
+//  _tRegular->computation();
+//  _tRegular->rotate( GMlib::Angle(180), GMlib::Vector<float,3>( 0.0f, 1.0f, 0.0f) );
+//   _tRegular->findSpheresPos();
+//  for (unsigned int i=0;i<_tRegular->spheres.size() ;i++){
+//      auto sphere=  _tRegular->spheres[i];
+//      sphere->setMaterial(GMlib::GMmaterial::blackPlastic());
+//      sphere->toggleDefaultVisualizer();
+//      sphere->replot(10,10,1,1);
+//      scene()->insert(sphere);
+//  }
+//  _tRegular->toggleDefaultVisualizer();
+//  _tRegular->setMaterial(GMlib::GMmaterial::turquoise());
+//  _tRegular->replot();
+//  scene()->insert(_tRegular);
 
 
   _tRandom->setMaxForce(2);
@@ -99,15 +99,15 @@ void Scenario::initializeScenario() {
   _tRandom->findSpheresPos();
     for (unsigned int i=0;i<_tRandom->spheres.size() ;i++){
         auto sphere=  _tRandom->spheres[i];
-        sphere->setMaterial(GMlib::GMmaterial::blackPlastic());
+        sphere->setMaterial(GMlib::GMmaterial::emerald());
         sphere->toggleDefaultVisualizer();
         sphere->replot(10,10,1,1);
         scene()->insert(sphere);
     }
 
   _tRandom->toggleDefaultVisualizer();
-  _tRandom->setMaterial(GMlib::GMmaterial::polishedRed());
-  _tRandom->translateGlobal(GMlib::Vector<float,3>{-8.0f,0.0f,0.0f});
+  _tRandom->setMaterial(GMlib::GMmaterial::brass());
+ // _tRandom->translateGlobal(GMlib::Vector<float,3>{-8.0f,0.0f,0.0f});
   _tRandom->replot();
   scene()->insert(_tRandom);
 
@@ -122,7 +122,7 @@ void Scenario::regularFem(){
 }
 
 void Scenario::animation(){
-    _tRegular->replot();
+    //_tRegular->replot();
     _tRandom->replot();
 
 }
